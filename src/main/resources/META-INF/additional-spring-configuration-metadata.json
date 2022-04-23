@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "application.type",
+      "type": "java.lang.String",
+      "description": "Description for application.type."
+    },
+    {
+      "name": "configuration.defaultLocale.language",
+      "type": "java.lang.String",
+      "description": "Description for configuration.defaultLocale.language."
+    }
+  ] }
