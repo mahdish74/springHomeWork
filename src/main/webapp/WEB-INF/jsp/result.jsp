@@ -14,7 +14,7 @@
 
 
 <div class="container">
-        <h3> personal code:  ${printRequestRes.personalCod}</h3><br>
+        <h3> personal code:  ${printRequestRes.personalCode}</h3><br>
         <h3> branch code: ${printRequestRes.branchCode}</h3><br>
         <h3> card pan: ${printRequestRes.cardPAN}</h3><br>
         <h3> ip address: ${printRequestRes.ipAddress}</h3><br>

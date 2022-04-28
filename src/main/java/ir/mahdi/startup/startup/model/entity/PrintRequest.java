@@ -12,7 +12,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Random;
 
 @Entity
 @Table
@@ -23,17 +22,17 @@ public class PrintRequest {
     private PrintRequestEmbeddedId embeddedId;
 
     @Column(nullable = false)
-    @Size(min = 5 ,max = 10)
+    @Size(min = 5, max = 10)
     private String personalCode;
 
-    @Column(nullable = false,insertable = false,updatable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     @Min(3)
     private String branchCode;
 
     @Column
     private String cardPAN;
 
-    @Column(nullable = false,insertable = false,updatable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     @Pattern(regexp = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$")
     private String ipAddress;
 
@@ -101,7 +100,7 @@ public class PrintRequest {
         return code;
     }
 
-        public PrintRequest setCode(Long code) {
+    public PrintRequest setCode(Long code) {
         this.code = code;
         return this;
     }

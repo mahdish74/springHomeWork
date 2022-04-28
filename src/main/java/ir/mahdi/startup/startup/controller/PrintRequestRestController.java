@@ -2,16 +2,20 @@ package ir.mahdi.startup.startup.controller;
 
 import ir.mahdi.startup.startup.dto.in.PrintRequestReq;
 import ir.mahdi.startup.startup.dto.out.PrintRequestRes;
+import ir.mahdi.startup.startup.infrastructure.aspect.CalExecuteTime;
 import ir.mahdi.startup.startup.service.PrintRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
+import java.util.Map;
 
 
 @RestController
 public class PrintRequestRestController {
+    Logger logger = LoggerFactory.getLogger(PrintRequestRestController.class);
 
     private final PrintRequestService printRequestService;
 
@@ -19,16 +23,17 @@ public class PrintRequestRestController {
         this.printRequestService = printRequestService;
     }
 
-    @GetMapping("/api/PrintRequest/getAll")
-    public List<PrintRequestRes> getAll() {
-        return printRequestService.getAllPrintRequest();
+    @GetMapping("/api/PrintRequest/getAll/{pageNo}/{pageSize}")
+    public List<PrintRequestRes> getAll(@RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "10") Integer pageSize, @RequestHeader Map<String, String> headers) {
+
+        headers.forEach((key, value) -> logger.info((key + "    " + value)));
+        return printRequestService.getAllPrintRequest(pageNo, pageSize);
     }
 
-    @GetMapping("/api/PrintRequest/getByBranchCode/{branchCode}")
-    public PrintRequestRes getByBranchCode(@PathVariable @Valid Long branchCode) {
-        return printRequestService.getByPrintRequest(branchCode);
+    @GetMapping("/api/PrintRequest/getByCode/{code}")
+    public PrintRequestRes getByCode(@PathVariable @Valid Long code) {
+        return printRequestService.getByPrintRequestCode(code);
     }
-
 
     @PostMapping("/api/PrintRequest/create")
     public PrintRequestRes create(@Valid @RequestBody PrintRequestReq printRequestReq) {
@@ -54,8 +59,5 @@ public class PrintRequestRestController {
     public List<String> getAllIpAddressByBranchCode(@PathVariable @Valid String branchCode) {
         return printRequestService.getAllIpAddressByBranchCode(branchCode);
     }
-
-
-
 }
 

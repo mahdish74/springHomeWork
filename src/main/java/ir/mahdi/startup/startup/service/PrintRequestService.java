@@ -2,6 +2,7 @@ package ir.mahdi.startup.startup.service;
 
 import ir.mahdi.startup.startup.dto.in.PrintRequestReq;
 import ir.mahdi.startup.startup.dto.out.PrintRequestRes;
+import ir.mahdi.startup.startup.exception.IssueDateNotValid;
 import ir.mahdi.startup.startup.exception.PrintRequestAlreadyExists;
 import ir.mahdi.startup.startup.exception.PrintRequestNotExists;
 import ir.mahdi.startup.startup.infrastructure.annotation.ExecuteTime;
@@ -9,6 +10,10 @@ import ir.mahdi.startup.startup.mapper.PrintCardRequestMapper;
 import ir.mahdi.startup.startup.model.entity.PrintRequest;
 import ir.mahdi.startup.startup.repository.PrintRequestRepo;
 import ir.mahdi.startup.startup.repository.custom.PrintRequestCustomRepImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +34,9 @@ public class PrintRequestService {
     }
 
     @ExecuteTime
-    public List<PrintRequestRes> getAllPrintRequest() {
-        List<PrintRequest> printRequests = printRequestRepo.findAll();
+    public List<PrintRequestRes> getAllPrintRequest(Integer pageNo, Integer pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("code"));
+        Page<PrintRequest> printRequests = printRequestRepo.findAll(paging);
         return printRequests.stream().map(PrintCardRequestMapper::mapPrintRequestToPrintRequestRes).collect(Collectors.toList());
     }
 
@@ -41,9 +47,11 @@ public class PrintRequestService {
 
         if (isPrintRequestExists) throw new PrintRequestAlreadyExists();
 
+        if (printRequestReq.getIssueDate() == null) throw new IssueDateNotValid();
+
         PrintRequest newPrintRequest = PrintCardRequestMapper.mapPrintRequestReqToPrintRequest(printRequestReq);
         newPrintRequest.setCode(new Random().nextLong());
-        printRequestRepo.save(newPrintRequest);
+        newPrintRequest = printRequestRepo.save(newPrintRequest);
         return PrintCardRequestMapper.mapPrintRequestToPrintRequestRes(newPrintRequest);
     }
 
@@ -69,7 +77,7 @@ public class PrintRequestService {
     }
 
     @ExecuteTime
-    public PrintRequestRes getByPrintRequest(Long code) {
+    public PrintRequestRes getByPrintRequestCode(Long code) {
         Optional<PrintRequest> optionalPrintRequest = printRequestRepo.findByCode(code);
 
         if (optionalPrintRequest.isEmpty()) throw new PrintRequestNotExists();

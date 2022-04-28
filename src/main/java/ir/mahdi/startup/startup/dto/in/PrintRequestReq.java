@@ -16,7 +16,7 @@ public class PrintRequestReq {
     @NotBlank(message = "{PrintRequestReq.personalCode_required}")
     private String personalCode;
 
-    @Size(min = 5,message = "{PrintRequestReq.branchCode_invalid}")
+    @Size(min = 3,message = "{PrintRequestReq.branchCode_invalid}")
     @NotBlank(message = "{PrintRequestReq.branchCode_required}")
     private String branchCode;
 
@@ -27,6 +27,7 @@ public class PrintRequestReq {
     @Pattern(regexp = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$",message = "{PrintRequestReq.ipAddress_invalid}")
     @NotBlank(message = "{PrintRequestReq.ipAddress_required}")
     private String ipAddress;
+
 
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
