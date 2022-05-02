@@ -25,7 +25,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         List<PrintRequest> printRequests = getFakePrintCardRequests();
-      //  printRequestCRUD.addPreCardRequests(printRequests);
+        printRequestCRUD.addPreCardRequests(printRequests);
 
     }
 

@@ -10,10 +10,11 @@ import java.util.Locale;
 @Service
 public class MessageService {
 
-    @Autowired
-    private ResourceBundleMessageSource messageSource;
+    private final ResourceBundleMessageSource messageSource;
 
-
+    public MessageService(ResourceBundleMessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     public String getMessage(String key){
         return messageSource.getMessage(key,null,Locale.US);
